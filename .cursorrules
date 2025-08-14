@@ -1,0 +1,445 @@
+# MCP Server Implementation Rules
+
+## 🎯 Purpose
+This document provides implementation guidelines for creating MCP (Model Context Protocol) servers using this Python template. Follow these rules to ensure proper implementation.
+
+## ⚠️ CRITICAL RULES
+
+### 1. Schema Definition - NEVER USE JSON.stringify()
+**❌ WRONG - Never do this:**
+```python
+# DON'T stringify schemas
+inputSchema = json.dumps({"type": "object", ...})
+```
+
+**✅ CORRECT - Always use proper dict/object:**
+```python
+# Define schemas as Python dicts in tools.json
+{
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "param": {"type": "string"}
+    }
+  }
+}
+```
+
+### 2. Tool Implementation Pattern
+Always follow this structure in `handlers.py`:
+```python
+async def your_tool_function(param1: str, param2: int = None) -> dict:
+    """Tool description with proper error handling."""
+    # 1. Input validation
+    if not param1:
+        raise ValueError("param1 is required")
+    
+    # 2. Process request
+    result = await process_data(param1, param2)
+    
+    # 3. Return structured response matching outputSchema
+    return {"field": "value"}  # Must match outputSchema
+
+# Register in TOOL_FUNCTIONS
+TOOL_FUNCTIONS = {
+    "your_tool": your_tool_function,
+}
+```
+
+## 📁 FILES TO MODIFY (Required Changes)
+
+### 1. `mcp_server/tools.json` ✏️
+**Purpose:** Define all tool schemas
+**Changes Required:**
+- Update server name
+- Replace all tool definitions with your tools
+- Define proper inputSchema and outputSchema for each tool
+- Use JSON Schema format (no stringification!)
+
+```json
+{
+  "name": "YourServerName",
+  "tools": [
+    {
+      "name": "your_tool_name",
+      "description": "Clear description of what this tool does",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "required_param": {
+            "type": "string",
+            "description": "What this parameter does"
+          },
+          "optional_param": {
+            "type": "integer",
+            "description": "Optional parameter",
+            "default": 10
+          }
+        },
+        "required": ["required_param"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "description": "What this tool returns",
+        "properties": {
+          "result": {"type": "string"},
+          "data": {"type": "object"}
+        }
+      }
+    }
+  ]
+}
+```
+
+### 2. `mcp_server/handlers.py` ✏️
+**Purpose:** Implement tool functions
+**Changes Required:**
+- Remove ALL Weather API example code
+- Implement your tool functions
+- Update TOOL_FUNCTIONS mapping
+- Add proper async/await handling
+- Include error handling
+
+```python
+# Remove example imports
+# Remove: import httpx, from dotenv import load_dotenv
+
+# Add your imports
+import your_dependencies
+
+# Implement your tools
+async def your_tool_name(required_param: str, optional_param: int = 10) -> dict:
+    """Implementation matching the schema."""
+    # Your implementation
+    return {"result": "success", "data": {}}
+
+# Update mapping
+TOOL_FUNCTIONS = {
+    "your_tool_name": your_tool_name,
+}
+```
+
+### 3. `mcp_server/server.py` ✏️
+**Purpose:** Core server implementation
+**Changes Required:**
+- Update server name in line 44
+- Update server version in line 87
+- Keep the core structure intact
+
+```python
+server = Server("YourServerName")  # Line 44
+# ...
+server_version="0.1.0",  # Line 87 - update version
+```
+
+### 4. `test_cases.json` ✏️
+**Purpose:** Define test scenarios
+**Changes Required:**
+- Remove ALL Weather API test cases
+- Add test cases for each of your tools
+- Include both success and failure cases
+
+```json
+{
+  "test_cases": [
+    {
+      "name": "test_your_tool_success",
+      "tool": "your_tool_name",
+      "arguments": {
+        "required_param": "test_value"
+      },
+      "description": "Test successful execution",
+      "expected_fields": ["result", "data"],
+      "should_succeed": true
+    },
+    {
+      "name": "test_your_tool_missing_param",
+      "tool": "your_tool_name",
+      "arguments": {},
+      "description": "Test missing required parameter",
+      "expected_fields": [],
+      "should_succeed": false
+    }
+  ]
+}
+```
+
+### 5. `pyproject.toml` ✏️
+**Purpose:** Project configuration
+**Changes Required:**
+- Update project name
+- Update description
+- Add/remove dependencies
+- Update console script name
+
+```toml
+[project]
+name = "your-mcp-server"
+version = "0.1.0"
+description = "Your MCP server description"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.6.0",
+    # Remove unused dependencies (httpx, etc.)
+    # Add your dependencies
+]
+
+[project.scripts]
+your-server = "mcp_server.__main__:main"
+```
+
+### 6. `.env.example` ✏️ (Create this file)
+**Purpose:** Example environment configuration
+**Action:** CREATE this file with example values
+
+```bash
+# Example environment variables for your MCP server
+# Copy this file to .env and fill in actual values
+
+# YOUR_API_KEY=your_actual_api_key_here
+# YOUR_CONFIG_VAR=config_value
+# DEBUG=false
+```
+
+### 7. `README.md` ✏️
+**Purpose:** Documentation
+**Changes Required:**
+- Update title and description
+- Replace Weather API examples with your tool examples
+- Update installation instructions
+- Document environment variables
+- Update usage examples
+
+## 📁 FILES TO KEEP AS-IS (Template Core)
+
+### ✅ DO NOT MODIFY:
+- `mcp_server/__init__.py` - Package initialization
+- `mcp_server/__main__.py` - Entry point
+- `main.py` - Testing compatibility wrapper
+- `test_server.py` - Test framework (works with any tools)
+- `uv.lock` - Will auto-update when you change dependencies
+
+## 📁 FILES TO CREATE
+
+### 1. `.env` 🆕 (User must create, DO NOT commit)
+```bash
+# Actual environment variables
+YOUR_API_KEY=actual_key_here
+```
+
+### 2. `.gitignore` 🆕 (If not exists)
+```
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+```
+
+## 🚫 REMOVE OLD CODE CHECKLIST
+
+When adapting this template, remove:
+
+1. **From `handlers.py`:**
+   - [ ] All Weather API imports (`httpx`, `dotenv`)
+   - [ ] All weather-related functions
+   - [ ] Weather API key loading
+   - [ ] Weather-specific error handling
+
+2. **From `tools.json`:**
+   - [ ] All weather tool definitions
+   - [ ] Weather-specific schema definitions
+
+3. **From `test_cases.json`:**
+   - [ ] All weather API test cases
+   - [ ] Weather-specific test scenarios
+
+4. **From `pyproject.toml`:**
+   - [ ] Unused dependencies (httpx if not needed)
+   - [ ] Weather-specific metadata
+
+## ✅ IMPLEMENTATION CHECKLIST
+
+Follow this order when implementing your MCP server:
+
+1. **Planning Phase:**
+   - [ ] Define what tools you need
+   - [ ] Design input/output schemas
+   - [ ] Identify required dependencies
+
+2. **Schema Phase:**
+   - [ ] Edit `tools.json` with your tool schemas
+   - [ ] Validate schemas are proper JSON (not stringified)
+   - [ ] Ensure all required fields are defined
+
+3. **Implementation Phase:**
+   - [ ] Clean out example code from `handlers.py`
+   - [ ] Implement each tool function
+   - [ ] Add error handling
+   - [ ] Update TOOL_FUNCTIONS mapping
+
+4. **Configuration Phase:**
+   - [ ] Update `pyproject.toml` with dependencies
+   - [ ] Create `.env.example` with needed variables
+   - [ ] Update server name in `server.py`
+
+5. **Testing Phase:**
+   - [ ] Write test cases in `test_cases.json`
+   - [ ] Run tests: `uv run python test_server.py`
+   - [ ] Fix any validation errors
+
+6. **Documentation Phase:**
+   - [ ] Update README.md
+   - [ ] Document all environment variables
+   - [ ] Add usage examples
+
+7. **Integration Phase:**
+   - [ ] Test with MCP client (Claude Desktop, etc.)
+   - [ ] Verify all tools appear and work
+   - [ ] Check error handling
+
+## 🎯 COMMON MISTAKES TO AVOID
+
+### ❌ DON'T:
+1. **Stringify schemas** - Always use dict/object format
+2. **Forget async** - Tool functions should be async
+3. **Skip validation** - Always validate inputs
+4. **Ignore schemas** - Output must match outputSchema
+5. **Hardcode secrets** - Use environment variables
+6. **Modify test framework** - `test_server.py` works as-is
+7. **Break MCP protocol** - Keep server.py structure intact
+
+### ✅ DO:
+1. **Define clear schemas** - Be explicit about types
+2. **Handle errors gracefully** - Return meaningful errors
+3. **Test thoroughly** - Cover success and failure cases
+4. **Document everything** - Clear descriptions in schemas
+5. **Use type hints** - Python type annotations
+6. **Follow async patterns** - Proper async/await usage
+7. **Validate inputs** - Check required parameters
+
+## 🔍 VALIDATION RULES
+
+### Input Validation:
+```python
+# Always validate required parameters
+if not required_param:
+    raise ValueError("required_param is required")
+
+# Validate parameter types and ranges
+if days < 1 or days > 30:
+    raise ValueError("days must be between 1 and 30")
+```
+
+### Output Validation:
+```python
+# Output MUST match outputSchema structure
+return {
+    "field1": "value",  # Required field from schema
+    "field2": {         # Nested object as defined in schema
+        "subfield": 123
+    }
+}
+```
+
+## 📊 SCHEMA FORMAT REFERENCE
+
+### Correct Schema Format:
+```json
+{
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "string",
+        "description": "Input text",
+        "minLength": 1,
+        "maxLength": 1000
+      },
+      "count": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 100,
+        "default": 10
+      },
+      "options": {
+        "type": "array",
+        "items": {"type": "string"}
+      }
+    },
+    "required": ["text"]
+  }
+}
+```
+
+### Schema Types:
+- `string` - Text values
+- `integer` - Whole numbers
+- `number` - Decimal numbers  
+- `boolean` - true/false
+- `object` - Nested structures
+- `array` - Lists of items
+
+### Schema Constraints:
+- `required` - Required fields array
+- `default` - Default values
+- `minimum`/`maximum` - Number ranges
+- `minLength`/`maxLength` - String length
+- `pattern` - Regex patterns
+- `enum` - Allowed values
+
+## 🚀 QUICK START COMMANDS
+
+```bash
+# 1. Install dependencies
+uv sync
+
+# 2. Create .env from example
+cp .env.example .env
+# Edit .env with your values
+
+# 3. Test your implementation
+uv run python test_server.py
+
+# 4. Run the server
+uv run python main.py
+
+# 5. Package for distribution
+uv build
+```
+
+## 📝 MCP CLIENT CONFIGURATION
+
+Configure your MCP client (e.g., Claude Desktop):
+
+```json
+{
+  "mcpServers": {
+    "your-server": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/yourusername/your-mcp-server",
+        "your-server"
+      ],
+      "env": {
+        "YOUR_API_KEY": "your_key_here"
+      }
+    }
+  }
+}
+```
+
+## 🔗 HELPFUL RESOURCES
+
+- [MCP Specification](https://github.com/modelcontextprotocol)
+- [JSON Schema Docs](https://json-schema.org/learn/getting-started-step-by-step)
+- [Python Async Guide](https://realpython.com/async-io-python/)
+- [UV Package Manager](https://github.com/astral-sh/uv)
+
+---
+
+**Remember:** The key to a successful MCP server is proper schema definition and validation. Never stringify schemas, always use proper object format, and ensure your outputs match your defined schemas exactly.

@@ -1,0 +1,287 @@
+{
+  "_template_instructions": "🎯 TEMPLATE INSTRUCTIONS - REMOVE THIS SECTION WHEN IMPLEMENTING YOUR MCP SERVER",
+  "_instructions": {
+    "_step_1": "Replace 'YourServerName' with your actual server name",
+    "_step_2": "Remove ALL weather API tool examples below (they are just examples!)",
+    "_step_3": "Add YOUR actual tool definitions following the same schema format",
+    "_step_4": "Each tool must have: name, description, inputSchema, outputSchema",
+    "_step_5": "CRITICAL: Use proper JSON objects for schemas, NEVER stringify them!",
+    "_step_6": "Remove this entire _template_instructions section when done"
+  },
+
+  "name": "YourServerName",
+  "_name_note": "👆 REPLACE 'YourServerName' with your actual MCP server name",
+  "_tools_note": "👇 REPLACE ALL WEATHER TOOLS BELOW WITH YOUR ACTUAL TOOLS - These are just examples!",
+
+  "_weather_examples_start": "🌤️ WEATHER API EXAMPLES START HERE - REMOVE ALL OF THESE!",
+  "_weather_note": "The following weather tools demonstrate proper schema structure",
+  "_weather_instruction": "Study these examples, then DELETE them and add your own tools",
+  "tools": [
+    {
+      "_example_note": "Example Tool #1 - Complex tool with multiple parameters and nested output schema",
+      "name": "get_weather",
+      "description": "Get weather - current and forecast (1–3 days) - for a location.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Location query (city name, lat/lon, postal code, etc)."
+          },
+          "days": {
+            "type": "integer",
+            "description": "Number of days (1–3).",
+            "minimum": 1,
+            "maximum": 3,
+            "default": 1
+          },
+          "include_air_quality": {
+            "type": "boolean",
+            "description": "Include air quality data.",
+            "default": false
+          },
+          "include_alerts": {
+            "type": "boolean",
+            "description": "Include weather alerts.",
+            "default": false
+          }
+        },
+        "required": ["query"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "description": "Weather forecast data",
+        "properties": {
+          "location": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "region": { "type": "string" },
+              "country": { "type": "string" },
+              "lat": { "type": "number" },
+              "lon": { "type": "number" },
+              "tz_id": { "type": "string" },
+              "localtime_epoch": { "type": "number" },
+              "localtime": { "type": "string" }
+            }
+          },
+          "current": {
+            "type": "object",
+            "properties": {
+              "last_updated_epoch": { "type": "number" },
+              "last_updated": { "type": "string" },
+              "temp_c": { "type": "number" },
+              "temp_f": { "type": "number" },
+              "is_day": { "type": "number" },
+              "condition": {
+                "type": "object",
+                "properties": {
+                  "text": { "type": "string" },
+                  "icon": { "type": "string" },
+                  "code": { "type": "number" }
+                }
+              },
+              "wind_mph": { "type": "number" },
+              "wind_kph": { "type": "number" },
+              "wind_degree": { "type": "number" },
+              "wind_dir": { "type": "string" },
+              "pressure_mb": { "type": "number" },
+              "pressure_in": { "type": "number" },
+              "precip_mm": { "type": "number" },
+              "precip_in": { "type": "number" },
+              "humidity": { "type": "number" },
+              "cloud": { "type": "number" },
+              "feelslike_c": { "type": "number" },
+              "feelslike_f": { "type": "number" },
+              "vis_km": { "type": "number" },
+              "vis_miles": { "type": "number" },
+              "uv": { "type": "number" },
+              "gust_mph": { "type": "number" },
+              "gust_kph": { "type": "number" }
+            }
+          },
+          "forecast": {
+            "type": "object",
+            "properties": {
+              "forecastday": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "date": { "type": "string" },
+                    "date_epoch": { "type": "number" },
+                    "day": {
+                      "type": "object",
+                      "properties": {
+                        "maxtemp_c": { "type": "number" },
+                        "maxtemp_f": { "type": "number" },
+                        "mintemp_c": { "type": "number" },
+                        "mintemp_f": { "type": "number" },
+                        "avgtemp_c": { "type": "number" },
+                        "avgtemp_f": { "type": "number" },
+                        "maxwind_mph": { "type": "number" },
+                        "maxwind_kph": { "type": "number" },
+                        "totalprecip_mm": { "type": "number" },
+                        "totalprecip_in": { "type": "number" },
+                        "totalsnow_cm": { "type": "number" },
+                        "avgvis_km": { "type": "number" },
+                        "avgvis_miles": { "type": "number" },
+                        "avghumidity": { "type": "number" },
+                        "daily_will_it_rain": { "type": "number" },
+                        "daily_chance_of_rain": { "type": "number" },
+                        "daily_will_it_snow": { "type": "number" },
+                        "daily_chance_of_snow": { "type": "number" },
+                        "condition": {
+                          "type": "object",
+                          "properties": {
+                            "text": { "type": "string" },
+                            "icon": { "type": "string" },
+                            "code": { "type": "number" }
+                          }
+                        },
+                        "uv": { "type": "number" }
+                      }
+                    },
+                    "astro": {
+                      "type": "object",
+                      "properties": {
+                        "sunrise": { "type": "string" },
+                        "sunset": { "type": "string" },
+                        "moonrise": { "type": "string" },
+                        "moonset": { "type": "string" },
+                        "moon_phase": { "type": "string" },
+                        "moon_illumination": { "type": "number" },
+                        "is_moon_up": { "type": "number" },
+                        "is_sun_up": { "type": "number" }
+                      }
+                    },
+                    "hour": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "time_epoch": { "type": "number" },
+                          "time": { "type": "string" },
+                          "temp_c": { "type": "number" },
+                          "temp_f": { "type": "number" },
+                          "is_day": { "type": "number" },
+                          "condition": {
+                            "type": "object",
+                            "properties": {
+                              "text": { "type": "string" },
+                              "icon": { "type": "string" },
+                              "code": { "type": "number" }
+                            }
+                          },
+                          "wind_mph": { "type": "number" },
+                          "wind_kph": { "type": "number" },
+                          "wind_degree": { "type": "number" },
+                          "wind_dir": { "type": "string" },
+                          "pressure_mb": { "type": "number" },
+                          "pressure_in": { "type": "number" },
+                          "precip_mm": { "type": "number" },
+                          "precip_in": { "type": "number" },
+                          "humidity": { "type": "number" },
+                          "cloud": { "type": "number" },
+                          "feelslike_c": { "type": "number" },
+                          "feelslike_f": { "type": "number" },
+                          "windchill_c": { "type": "number" },
+                          "windchill_f": { "type": "number" },
+                          "heatindex_c": { "type": "number" },
+                          "heatindex_f": { "type": "number" },
+                          "dewpoint_c": { "type": "number" },
+                          "dewpoint_f": { "type": "number" },
+                          "will_it_rain": { "type": "number" },
+                          "chance_of_rain": { "type": "number" },
+                          "will_it_snow": { "type": "number" },
+                          "chance_of_snow": { "type": "number" },
+                          "vis_km": { "type": "number" },
+                          "vis_miles": { "type": "number" },
+                          "gust_mph": { "type": "number" },
+                          "gust_kph": { "type": "number" },
+                          "uv": { "type": "number" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "alerts": {
+            "type": "object",
+            "description": "Weather alerts (only when include_alerts is true)",
+            "properties": {
+              "alert": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "headline": { "type": "string" },
+                    "msgtype": { "type": "string" },
+                    "severity": { "type": "string" },
+                    "urgency": { "type": "string" },
+                    "areas": { "type": "string" },
+                    "category": { "type": "string" },
+                    "certainty": { "type": "string" },
+                    "event": { "type": "string" },
+                    "note": { "type": "string" },
+                    "effective": { "type": "string" },
+                    "expires": { "type": "string" },
+                    "desc": { "type": "string" },
+                    "instruction": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "_example_note": "Example Tool #2 - Simple tool with single parameter and array output",
+      "name": "search_locations",
+      "description": "Search for locations matching query. Returns location details without weather data.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Location query (city name, lat/lon, postal code, etc)."
+          }
+        },
+        "required": ["query"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "description": "Search results containing matching locations",
+        "properties": {
+          "items": {
+            "type": "array",
+            "description": "Array of matching locations",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "number" },
+                "name": { "type": "string" },
+                "region": { "type": "string" },
+                "country": { "type": "string" },
+                "lat": { "type": "number" },
+                "lon": { "type": "number" },
+                "url": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "_implementation_checklist": {
+    "_step_1": "✅ Define your tool schemas here",
+    "_step_2": "✅ Implement corresponding functions in handlers.py",
+    "_step_3": "✅ Update TOOL_FUNCTIONS mapping in handlers.py",
+    "_step_4": "✅ Create test cases in test_cases.json",
+    "_step_5": "✅ Test with: uv run python test_server.py",
+    "_step_6": "✅ Remove all _template_ and _example_ entries from this file"
+  }
+}

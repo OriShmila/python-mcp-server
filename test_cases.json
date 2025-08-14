@@ -1,0 +1,195 @@
+{
+  "_template_instructions": "🎯 TEMPLATE INSTRUCTIONS - REMOVE THIS SECTION WHEN IMPLEMENTING YOUR MCP SERVER",
+  "_instructions": {
+    "_step_1": "Remove ALL weather API test cases below (they are just examples!)",
+    "_step_2": "Add YOUR actual test cases following the same format",
+    "_step_3": "Include both success and failure test cases for each tool",
+    "_step_4": "Test edge cases, validation, and error conditions",
+    "_step_5": "Run tests with: uv run python test_server.py",
+    "_step_6": "Remove this entire _template_instructions section when done"
+  },
+
+  "_test_case_template": {
+    "_note": "📝 Copy this structure for each of your test cases",
+    "name": "test_your_tool_success",
+    "_name_format": "Use descriptive names like: test_toolname_condition",
+    "tool": "your_tool_name",
+    "_tool_note": "Must match tool name from tools.json exactly",
+    "arguments": {
+      "required_param": "test_value",
+      "optional_param": 123
+    },
+    "_arguments_note": "Provide actual parameter values for testing",
+    "description": "Clear description of what this test validates",
+    "expected_fields": ["result", "data", "success"],
+    "_expected_fields_note": "Fields that should exist in successful response",
+    "should_succeed": true,
+    "_should_succeed_note": "true for success cases, false for expected failures"
+  },
+
+  "_example_test_patterns": {
+    "_success_test": {
+      "name": "test_ping_simple",
+      "tool": "ping",
+      "arguments": { "message": "hello" },
+      "description": "Test basic ping functionality",
+      "expected_fields": ["response", "timestamp"],
+      "should_succeed": true
+    },
+    "_failure_test": {
+      "name": "test_ping_empty_message",
+      "tool": "ping",
+      "arguments": { "message": "" },
+      "description": "Test ping with empty message",
+      "expected_fields": [],
+      "should_succeed": false
+    }
+  },
+  "_test_cases_note": "👇 REPLACE ALL WEATHER TESTS BELOW WITH YOUR ACTUAL TEST CASES!",
+  "_weather_examples_start": "🌤️ WEATHER API TEST EXAMPLES START HERE - REMOVE ALL OF THESE!",
+  "test_cases": [
+    {
+      "_example_note": "Example #1 - Basic success test with required and optional parameters",
+      "name": "get_weather_1_day",
+      "tool": "get_weather",
+      "arguments": {
+        "query": "Paris",
+        "days": 1
+      },
+      "description": "Get 1-day forecast for Paris",
+      "expected_fields": ["location", "current", "forecast"],
+      "should_succeed": true
+    },
+    {
+      "name": "get_weather_3_days",
+      "tool": "get_weather",
+      "arguments": {
+        "query": "Tokyo",
+        "days": 3
+      },
+      "description": "Get 3-day forecast for Tokyo",
+      "expected_fields": ["location", "current", "forecast"],
+      "should_succeed": true
+    },
+    {
+      "_example_note": "Example #2 - Test with multiple boolean parameters",
+      "name": "get_weather_with_air_quality_only",
+      "tool": "get_weather",
+      "arguments": {
+        "query": "Delhi",
+        "days": 3,
+        "include_air_quality": true,
+        "include_alerts": false
+      },
+      "description": "Get 3-day forecast for Delhi with air quality but no alerts",
+      "expected_fields": ["location", "current", "forecast"],
+      "should_succeed": true
+    },
+    {
+      "_example_note": "Example #3 - Simple tool with single parameter and array output",
+      "name": "search_locations_exact_match",
+      "tool": "search_locations",
+      "arguments": {
+        "query": "San Francisco"
+      },
+      "description": "Search for exact city name San Francisco",
+      "expected_fields": ["items"],
+      "should_succeed": true
+    },
+    {
+      "name": "search_locations_partial_match",
+      "tool": "search_locations",
+      "arguments": {
+        "query": "New York"
+      },
+      "description": "Search for partial match New York (multiple results)",
+      "expected_fields": ["items"],
+      "should_succeed": true
+    },
+    {
+      "name": "search_locations_country_search",
+      "tool": "search_locations",
+      "arguments": {
+        "query": "London"
+      },
+      "description": "Search for London (multiple countries have London)",
+      "expected_fields": ["items"],
+      "should_succeed": true
+    },
+    {
+      "name": "search_locations_airport_code",
+      "tool": "search_locations",
+      "arguments": {
+        "query": "JFK"
+      },
+      "description": "Search using airport code JFK",
+      "expected_fields": ["items"],
+      "should_succeed": true
+    },
+    {
+      "name": "search_locations_coordinates",
+      "tool": "search_locations",
+      "arguments": {
+        "query": "48.8566,2.3522"
+      },
+      "description": "Search using coordinates (Paris)",
+      "expected_fields": ["items"],
+      "should_succeed": true
+    },
+    {
+      "_example_note": "Example #4 - Failure test for invalid input",
+      "name": "invalid_location",
+      "tool": "get_weather",
+      "arguments": {
+        "query": "NonExistentCity12345"
+      },
+      "description": "Test with invalid location",
+      "expected_fields": [],
+      "should_succeed": false
+    },
+    {
+      "_example_note": "Example #4 - Validation test for required parameter",
+      "name": "empty_query",
+      "tool": "get_weather",
+      "arguments": {
+        "query": ""
+      },
+      "description": "Test with empty query",
+      "expected_fields": [],
+      "should_succeed": false
+    },
+
+    {
+      "name": "invalid_days_count",
+      "tool": "get_weather",
+      "arguments": {
+        "query": "London",
+        "days": 20
+      },
+      "description": "Test with invalid days count (>14)",
+      "expected_fields": [],
+      "should_succeed": false
+    },
+    {
+      "name": "negative_days_count",
+      "tool": "get_weather",
+      "arguments": {
+        "query": "Paris",
+        "days": -1
+      },
+      "description": "Test with negative days count",
+      "expected_fields": [],
+      "should_succeed": false
+    }
+  ],
+
+  "_test_case_checklist": {
+    "_step_1": "✅ Create success tests for each tool with typical inputs",
+    "_step_2": "✅ Create failure tests for invalid inputs (empty, wrong type, etc.)",
+    "_step_3": "✅ Test edge cases (boundary values, special characters, etc.)",
+    "_step_4": "✅ Test parameter validation (required vs optional)",
+    "_step_5": "✅ Verify expected_fields match your outputSchema",
+    "_step_6": "✅ Run tests: uv run python test_server.py",
+    "_step_7": "✅ Remove all _example_ and weather test entries when implementing"
+  }
+}
