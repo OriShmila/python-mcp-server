@@ -8,8 +8,8 @@ This document provides implementation guidelines for creating **UNIQUE** MCP (Mo
 ### 0. Make Your Server UNIQUE (Most Important!)
 **🚨 BEFORE ANYTHING ELSE - Rename the package folder:**
 ```bash
-# Rename mcp_server to YOUR unique name
-mv mcp_server my_weather_server  # Example: weather, finance, docs, etc.
+# Rename mcp_server to YOUR unique name - NAME MUST BE THE NAME OF ROOT FOLDER AS PASCAL CASE.
+mv mcp_server weather_mcp_server 
 
 # Then update imports in these files (look for 🎯 template markers):
 # - my_weather_server/server.py (line 18)  
