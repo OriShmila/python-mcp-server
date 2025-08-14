@@ -1,12 +1,19 @@
-# 🎯 TEMPLATE INSTRUCTIONS - Update these values for your MCP server
-# 1. Replace "your-mcp-server" with your actual server name (use kebab-case)
-# 2. Update version, description, and author info
-# 3. Remove unused dependencies (httpx, python-dotenv if not needed)
-# 4. Add your specific dependencies
-# 5. Update the console script name to match your server name
+# 🎯 TEMPLATE INSTRUCTIONS - CRITICAL: Make your server unique!
+# 1. CHANGE FOLDER NAME: Rename "mcp_server" folder to YOUR unique name (snake_case)
+# 2. UPDATE IMPORTS: Update all imports in server.py, main.py, test_server.py
+# 3. Replace "your-mcp-server" with your actual server name (kebab-case)
+# 4. Update version, description, and author info  
+# 5. Remove unused dependencies (httpx, python-dotenv if not needed)
+# 6. Add your specific dependencies
+# 7. Update the console script name to match your server name
+
+# ⚠️ CRITICAL: To avoid conflicts, you MUST:
+# - Rename the "mcp_server" folder to something unique like "my_weather_server"
+# - Update all imports from "mcp_server" to your new folder name
+# - Use a unique project name that won't conflict with other MCP servers
 
 [project]
-name = "your-mcp-server"  # 👈 REPLACE: Use kebab-case like "my-awesome-server"
+name = "your-mcp-server"  # 👈 REPLACE: Use unique kebab-case like "my-weather-server"
 version = "0.1.0"        # 👈 UPDATE: Your version number
 description = "Description of your MCP server functionality"  # 👈 REPLACE: Describe what your server does
 readme = "README.md"
@@ -29,9 +36,12 @@ dependencies = [
     # "aiofiles>=23.0.0",    # Async file operations
 ]
 
-# 👇 REPLACE: Update script name to match your server
+# 👇 REPLACE: Update script name and import path to match your server
 [project.scripts]
-your-server = "mcp_server.__main__:main"  # 👈 REPLACE: "your-server" with your command name
+your-server = "mcp_server.__main__:main"  # 👈 REPLACE: "your-server" AND "mcp_server" with your names
+
+# Example after renaming folder from "mcp_server" to "weather_server":
+# weather-api = "weather_server.__main__:main"
 
 # Optional: Add more metadata
 # [project.optional-dependencies]
@@ -51,13 +61,21 @@ requires = ["hatchling>=1.25"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
+# 👇 REPLACE: with your server name pascal case
 packages = ["mcp_server"]
 # Ensure non-Python data is included in the wheel
 force-include = { "mcp_server/tools.json" = "mcp_server/tools.json" }
 
 [tool.hatch.build.targets.sdist]
 include = [
-  "mcp_server/**",
+  "mcp_server/**",  # 👈 REPLACE: "mcp_server" with your folder name
   "README.md",
   "LICENSE",
 ]
+
+# Example after renaming folder:
+# include = [
+#   "weather_server/**",
+#   "README.md", 
+#   "LICENSE",
+# ]

@@ -2,6 +2,12 @@
 """
 Comprehensive test suite for the MCP server.
 Tests actual tool calls with real API requests.
+
+🎯 TEMPLATE INSTRUCTIONS - Update imports when you rename the folder!
+When you rename "mcp_server" folder to your unique name (e.g., "weather_server"):
+1. This file imports from main.py, which imports from mcp_server
+2. Update main.py import (line 6) to use your new folder name
+3. No changes needed in this file directly - it imports through main.py
 """
 
 import asyncio

@@ -1,9 +1,26 @@
-# MCP Server Implementation Rules
+# MCP Server Template Rules
 
 ## 🎯 Purpose
-This document provides implementation guidelines for creating MCP (Model Context Protocol) servers using this Python template. Follow these rules to ensure proper implementation.
+This document provides implementation guidelines for creating **UNIQUE** MCP (Model Context Protocol) servers using this Python template. Follow these rules to ensure proper implementation and avoid conflicts.
 
-## ⚠️ CRITICAL RULES
+## ⚠️ CRITICAL RULES - START HERE
+
+### 0. Make Your Server UNIQUE (Most Important!)
+**🚨 BEFORE ANYTHING ELSE - Rename the package folder:**
+```bash
+# Rename mcp_server to YOUR unique name
+mv mcp_server my_weather_server  # Example: weather, finance, docs, etc.
+
+# Then update imports in these files (look for 🎯 template markers):
+# - my_weather_server/server.py (line 18)  
+# - main.py (line 11)
+# - pyproject.toml (lines 41, 65, 67, 71)
+```
+
+**Why this matters:**
+- Prevents import conflicts when multiple MCP servers are installed
+- Makes your server identifiable in logs and client configurations
+- Required for proper packaging and distribution
 
 ### 1. Schema Definition - NEVER USE JSON.stringify()
 **❌ WRONG - Never do this:**
@@ -48,11 +65,14 @@ TOOL_FUNCTIONS = {
 
 ## 📁 FILES TO MODIFY (Required Changes)
 
-### 1. `mcp_server/tools.json` ✏️
-**Purpose:** Define all tool schemas
+### 1. `your_server_name/tools.json` ✏️
+**Purpose:** Define all tool schemas  
+**Current State:** Contains 2 example weather tools (get_weather, search_locations)
 **Changes Required:**
-- Update server name
-- Replace all tool definitions with your tools
+- Follow 🎯 template instructions in the file
+- Remove ALL weather example tools 
+- Replace with YOUR actual tools
+- Update server name from "YourServerName"
 - Define proper inputSchema and outputSchema for each tool
 - Use JSON Schema format (no stringification!)
 
@@ -91,12 +111,15 @@ TOOL_FUNCTIONS = {
 }
 ```
 
-### 2. `mcp_server/handlers.py` ✏️
+### 2. `your_server_name/handlers.py` ✏️
 **Purpose:** Implement tool functions
+**Current State:** Contains 2 example weather functions with template instructions
 **Changes Required:**
-- Remove ALL Weather API example code
-- Implement your tool functions
-- Update TOOL_FUNCTIONS mapping
+- Follow 🎯 template instructions in the file
+- Remove ALL Weather API example code (marked as "WEATHER EXAMPLE")
+- Remove weather imports (httpx, dotenv) if not needed
+- Implement YOUR tool functions
+- Update TOOL_FUNCTIONS mapping (currently has only 2 tools)
 - Add proper async/await handling
 - Include error handling
 
@@ -119,10 +142,12 @@ TOOL_FUNCTIONS = {
 }
 ```
 
-### 3. `mcp_server/server.py` ✏️
-**Purpose:** Core server implementation
+### 3. `your_server_name/server.py` ✏️
+**Purpose:** Core server implementation  
 **Changes Required:**
-- Update server name in line 44
+- Follow 🎯 template instructions at the top of the file
+- Update import on line 18 when you rename the folder
+- Update server name and logger name (lines 21, 44)
 - Update server version in line 87
 - Keep the core structure intact
 
@@ -134,10 +159,13 @@ server_version="0.1.0",  # Line 87 - update version
 
 ### 4. `test_cases.json` ✏️
 **Purpose:** Define test scenarios
+**Current State:** Contains 12 test cases for 2 example weather tools with template instructions
 **Changes Required:**
-- Remove ALL Weather API test cases
-- Add test cases for each of your tools
+- Follow 🎯 template instructions in the file
+- Remove ALL Weather API test cases (marked as examples)
+- Add test cases for each of YOUR tools
 - Include both success and failure cases
+- Use the provided template patterns
 
 ```json
 {
@@ -167,9 +195,12 @@ server_version="0.1.0",  # Line 87 - update version
 ### 5. `pyproject.toml` ✏️
 **Purpose:** Project configuration
 **Changes Required:**
-- Update project name
-- Update description
-- Add/remove dependencies
+- Follow 🎯 template instructions at the top
+- Update project name (line 16) to your unique kebab-case name
+- Update folder references (lines 41, 65, 67, 71) when you rename mcp_server
+- Update description and version
+- Remove unused dependencies (httpx, python-dotenv if not needed)
+- Add your specific dependencies
 - Update console script name
 
 ```toml
@@ -189,9 +220,14 @@ dependencies = [
 your-server = "mcp_server.__main__:main"
 ```
 
-### 6. `.env.example` ✏️ (Create this file)
-**Purpose:** Example environment configuration
-**Action:** CREATE this file with example values
+### 6. `.env.example` ✏️ (Already exists)
+**Purpose:** Example environment configuration  
+**Current State:** Contains comprehensive environment variable examples with template instructions
+**Changes Required:**
+- Follow template instructions in the file
+- Remove weather-specific variables if not needed
+- Add your actual environment variables
+- Update examples to match your use case
 
 ```bash
 # Example environment variables for your MCP server
@@ -204,20 +240,21 @@ your-server = "mcp_server.__main__:main"
 
 ### 7. `README.md` ✏️
 **Purpose:** Documentation
+**Current State:** Updated with template instructions and folder renaming guidance
 **Changes Required:**
-- Update title and description
-- Replace Weather API examples with your tool examples
-- Update installation instructions
-- Document environment variables
-- Update usage examples
+- Update title and description for your specific server
+- Replace weather API examples with your tool examples  
+- Update installation instructions if needed
+- Document your specific environment variables
+- Update usage examples for your tools
 
 ## 📁 FILES TO KEEP AS-IS (Template Core)
 
-### ✅ DO NOT MODIFY:
-- `mcp_server/__init__.py` - Package initialization
-- `mcp_server/__main__.py` - Entry point
-- `main.py` - Testing compatibility wrapper
-- `test_server.py` - Test framework (works with any tools)
+### ✅ DO NOT MODIFY (except for folder rename updates):
+- `your_server_name/__init__.py` - Package initialization  
+- `your_server_name/__main__.py` - Entry point (has 🎯 template instructions)
+- `main.py` - Testing compatibility wrapper (has 🎯 template instructions for import update)
+- `test_server.py` - Test framework (works with any tools, has 🎯 template instructions)
 - `uv.lock` - Will auto-update when you change dependencies
 
 ## 📁 FILES TO CREATE
@@ -241,65 +278,79 @@ build/
 
 ## 🚫 REMOVE OLD CODE CHECKLIST
 
-When adapting this template, remove:
+When adapting this template, remove (all marked as examples in files):
 
-1. **From `handlers.py`:**
-   - [ ] All Weather API imports (`httpx`, `dotenv`)
-   - [ ] All weather-related functions
+1. **From `your_server_name/handlers.py`:**
+   - [ ] All Weather API imports (`httpx`, `dotenv`) - marked as "WEATHER EXAMPLE IMPORTS"
+   - [ ] All weather-related functions - marked as "WEATHER EXAMPLE" 
    - [ ] Weather API key loading
    - [ ] Weather-specific error handling
+   - [ ] All template comments after implementation
 
-2. **From `tools.json`:**
-   - [ ] All weather tool definitions
+2. **From `your_server_name/tools.json`:**
+   - [ ] All weather tool definitions - marked with "_example_note" 
    - [ ] Weather-specific schema definitions
+   - [ ] All template instruction sections starting with "_"
 
 3. **From `test_cases.json`:**
-   - [ ] All weather API test cases
-   - [ ] Weather-specific test scenarios
+   - [ ] All weather API test cases - marked with "_example_note"
+   - [ ] Weather-specific test scenarios  
+   - [ ] All template instruction sections starting with "_"
 
 4. **From `pyproject.toml`:**
    - [ ] Unused dependencies (httpx if not needed)
-   - [ ] Weather-specific metadata
+   - [ ] Template instruction comments
 
 ## ✅ IMPLEMENTATION CHECKLIST
 
 Follow this order when implementing your MCP server:
 
+0. **Uniqueness Phase (CRITICAL FIRST!):**
+   - [ ] Rename `mcp_server` folder to your unique name (e.g., `weather_server`)
+   - [ ] Update imports following 🎯 template instructions in files
+   - [ ] Test that server still works: `uv run python test_server.py`
+
 1. **Planning Phase:**
-   - [ ] Define what tools you need
+   - [ ] Define what tools you need (study the 2 example tools first)
    - [ ] Design input/output schemas
    - [ ] Identify required dependencies
 
 2. **Schema Phase:**
-   - [ ] Edit `tools.json` with your tool schemas
+   - [ ] Edit `your_server_name/tools.json` following 🎯 instructions
+   - [ ] Remove weather example tools
+   - [ ] Add your tool schemas  
    - [ ] Validate schemas are proper JSON (not stringified)
    - [ ] Ensure all required fields are defined
 
 3. **Implementation Phase:**
-   - [ ] Clean out example code from `handlers.py`
+   - [ ] Clean out weather example code from `your_server_name/handlers.py`
+   - [ ] Remove weather imports if not needed
    - [ ] Implement each tool function
    - [ ] Add error handling
    - [ ] Update TOOL_FUNCTIONS mapping
 
 4. **Configuration Phase:**
-   - [ ] Update `pyproject.toml` with dependencies
-   - [ ] Create `.env.example` with needed variables
-   - [ ] Update server name in `server.py`
+   - [ ] Update `pyproject.toml` following 🎯 instructions
+   - [ ] Add/remove dependencies as needed
+   - [ ] Update `.env.example` with your variables
+   - [ ] Update server name and logger in `server.py`
 
 5. **Testing Phase:**
-   - [ ] Write test cases in `test_cases.json`
+   - [ ] Remove weather test cases from `test_cases.json`
+   - [ ] Write test cases for your tools
    - [ ] Run tests: `uv run python test_server.py`
    - [ ] Fix any validation errors
 
 6. **Documentation Phase:**
-   - [ ] Update README.md
+   - [ ] Update README.md for your server
    - [ ] Document all environment variables
-   - [ ] Add usage examples
+   - [ ] Add usage examples for your tools
 
 7. **Integration Phase:**
    - [ ] Test with MCP client (Claude Desktop, etc.)
    - [ ] Verify all tools appear and work
    - [ ] Check error handling
+   - [ ] Remove all template instructions and examples
 
 ## 🎯 COMMON MISTAKES TO AVOID
 
@@ -313,13 +364,15 @@ Follow this order when implementing your MCP server:
 7. **Break MCP protocol** - Keep server.py structure intact
 
 ### ✅ DO:
-1. **Define clear schemas** - Be explicit about types
-2. **Handle errors gracefully** - Return meaningful errors
-3. **Test thoroughly** - Cover success and failure cases
-4. **Document everything** - Clear descriptions in schemas
-5. **Use type hints** - Python type annotations
-6. **Follow async patterns** - Proper async/await usage
-7. **Validate inputs** - Check required parameters
+1. **Make your server unique** - Rename folder and update imports FIRST
+2. **Follow template instructions** - Look for 🎯 markers in every file
+3. **Define clear schemas** - Be explicit about types
+4. **Handle errors gracefully** - Return meaningful errors
+5. **Test thoroughly** - Cover success and failure cases
+6. **Document everything** - Clear descriptions in schemas
+7. **Use type hints** - Python type annotations
+8. **Follow async patterns** - Proper async/await usage
+9. **Validate inputs** - Check required parameters
 
 ## 🔍 VALIDATION RULES
 
@@ -394,20 +447,29 @@ return {
 ## 🚀 QUICK START COMMANDS
 
 ```bash
-# 1. Install dependencies
+# 1. Make your server unique (CRITICAL FIRST STEP!)
+mv mcp_server my_awesome_server  # Use YOUR unique name
+# Then update imports following 🎯 template instructions
+
+# 2. Install dependencies
 uv sync
 
-# 2. Create .env from example
+# 3. Test the template works with your renamed folder
+uv run python test_server.py
+
+# 4. Create .env from example
 cp .env.example .env
 # Edit .env with your values
 
-# 3. Test your implementation
+# 5. Customize your server following 🎯 instructions in each file
+
+# 6. Test your implementation
 uv run python test_server.py
 
-# 4. Run the server
+# 7. Run the server
 uv run python main.py
 
-# 5. Package for distribution
+# 8. Package for distribution
 uv build
 ```
 

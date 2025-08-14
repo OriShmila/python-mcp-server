@@ -1,34 +1,38 @@
 # Python MCP Server Template
 
-A production-ready Python template for building Model Context Protocol (MCP) servers. This template provides a complete foundation with schema validation, comprehensive testing, and a reference implementation using the Weather API.
+A production-ready Python template for building Model Context Protocol (MCP) servers. This template provides a complete foundation with schema validation, comprehensive testing, and example implementations using the Weather API.
 
 ## 🎯 Purpose
 
-This template serves as a starting point for building your own MCP servers in Python. It includes:
+This template serves as a starting point for building your own **unique** MCP servers in Python. It includes:
 - Complete MCP server setup with `uv` package manager
-- JSON Schema-based tool definitions
+- JSON Schema-based tool definitions with clear examples
 - Comprehensive input/output validation
 - Extensive test suite framework
 - Error handling and logging
-- Example implementation (Weather API)
+- 2 example weather tools showing different patterns
+- **Template instructions** embedded in every file for easy customization
 
 ## 🏗️ Template Structure
 
 ```
 python-mcp-server/
-├── mcp_server/              # Main package directory
+├── mcp_server/              # Main package directory (⚠️ RENAME THIS!)
 │   ├── __init__.py         # Package initialization
 │   ├── __main__.py         # Entry point for the MCP server
-│   ├── server.py           # Core MCP server implementation
+│   ├── server.py           # Core MCP server implementation  
 │   ├── handlers.py         # Tool function implementations
 │   └── tools.json          # Tool schemas and definitions
 ├── main.py                 # Compatibility wrapper for testing
 ├── test_server.py          # Comprehensive test framework
-├── test_cases.json         # Test case definitions
+├── test_cases.json         # Test case definitions  
 ├── pyproject.toml          # Project dependencies and metadata
+├── .env.example            # Environment variables template
 ├── uv.lock                 # Locked dependencies
 └── README.md               # This file
 ```
+
+**⚠️ Important:** Rename `mcp_server/` to your unique name (e.g., `weather_server/`) and update imports accordingly.
 
 ## 🚀 Quick Start
 
@@ -40,18 +44,30 @@ python-mcp-server/
    cd my-mcp-server
    ```
 
-2. **Install dependencies with uv:**
+2. **Make your server unique (Critical!):**
+   ```bash
+   # Rename the package folder to avoid conflicts
+   mv mcp_server my_server_name  # e.g., mv mcp_server weather_server
+   
+   # Follow template instructions (🎯) in these files to update imports:
+   # - my_server_name/server.py (line 18)
+   # - main.py (line 11)  
+   # - pyproject.toml (lines 41, 65, 67, 71)
+   ```
+
+3. **Install dependencies with uv:**
    ```bash
    uv sync
    ```
 
-3. **Customize for your use case:**
-   - Replace tool implementations in `mcp_server/handlers.py`
-   - Update tool schemas in `mcp_server/tools.json`
+4. **Customize for your use case:**
+   - Follow template instructions (🎯) embedded in every file
+   - Replace tool implementations in `my_server_name/handlers.py`
+   - Update tool schemas in `my_server_name/tools.json`  
    - Modify test cases in `test_cases.json`
    - Update project metadata in `pyproject.toml`
 
-4. **Run tests to verify:**
+5. **Run tests to verify:**
    ```bash
    uv run python test_server.py
    ```
@@ -59,6 +75,7 @@ python-mcp-server/
 ## 📋 Core Components
 
 ### 1. Server Implementation (`mcp_server/server.py`)
+**⚠️ Note:** After renaming folder, this becomes `your_server_name/server.py`
 
 The core MCP server that:
 - Loads tool schemas from `tools.json`
@@ -72,7 +89,8 @@ The core MCP server that:
 - `handle_call_tool()` - Executes tool functions with validation
 - `run_server()` - Main server loop
 
-### 2. Tool Handlers (`mcp_server/handlers.py`)
+### 2. Tool Handlers (`mcp_server/handlers.py`) 
+**⚠️ Note:** After renaming folder, this becomes `your_server_name/handlers.py`
 
 Implement your tool functions here. The template includes Weather API handlers as examples:
 
@@ -98,6 +116,7 @@ TOOL_FUNCTIONS = {
 ```
 
 ### 3. Tool Schemas (`mcp_server/tools.json`)
+**⚠️ Note:** After renaming folder, this becomes `your_server_name/tools.json`
 
 Define your tools using JSON Schema:
 

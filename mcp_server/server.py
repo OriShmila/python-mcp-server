@@ -1,3 +1,10 @@
+# 🎯 TEMPLATE INSTRUCTIONS - Update imports when you rename the folder!
+# When you rename "mcp_server" folder to your unique name (e.g., "weather_server"):
+# 1. Change line 11: from mcp_server.handlers import TOOL_FUNCTIONS
+#    to: from your_folder_name.handlers import TOOL_FUNCTIONS
+# 2. Update server name on line 44 from "WeatherAPI" to your server name
+# 3. Update version on line 87 to your version
+
 import json
 import logging
 import os
@@ -8,10 +15,14 @@ from mcp.server.models import InitializationOptions
 import mcp.server.stdio
 import mcp.types as types
 
-from mcp_server.handlers import TOOL_FUNCTIONS
+from mcp_server.handlers import (
+    TOOL_FUNCTIONS,
+)  # 👈 CHANGE: Update "mcp_server" to your folder name
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-logger = logging.getLogger("WeatherMCP")
+logger = logging.getLogger(
+    "WeatherMCP"
+)  # 👈 CHANGE: Update "WeatherMCP" to your server name
 
 
 def _package_path(filename: str) -> str:
