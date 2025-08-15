@@ -12,10 +12,13 @@ When you rename "mcp_server" folder to your unique name (e.g., "weather_server")
 
 import asyncio
 import json
+import logging
 import time
 from typing import Dict, List, Any
 import jsonschema
 from jsonschema import ValidationError
+
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 
 class TestResults:

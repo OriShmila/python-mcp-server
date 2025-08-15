@@ -350,7 +350,14 @@ Follow this order when implementing your MCP server:
    - [ ] Test with MCP client (Claude Desktop, etc.)
    - [ ] Verify all tools appear and work
    - [ ] Check error handling
-   - [ ] Remove all template instructions and examples
+
+8. **Cleanup Phase (Final Step):**
+   - [ ] Remove all 🎯 template instruction markers from code files
+   - [ ] Remove template comments marked as "WEATHER EXAMPLE" or "_example_note"
+   - [ ] Remove "_" prefixed instruction sections from JSON files
+   - [ ] Clean up any remaining TODO/FIXME comments from template
+   - [ ] Verify no template-specific content remains in production code
+   - [ ] Update this .cursorrules file to reflect your actual server implementation
 
 ## 🎯 COMMON MISTAKES TO AVOID
 
