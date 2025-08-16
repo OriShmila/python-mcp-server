@@ -198,7 +198,6 @@ async def run_tool_test(
     validation_results = {
         "input_validation": None,
         "output_validation": None,
-        "legacy_validation": None,
     }
 
     try:
@@ -249,36 +248,6 @@ async def run_tool_test(
                 return (
                     False,
                     f"Output schema validation failed: {output_msg}",
-                    duration,
-                    validation_results,
-                )
-
-            # 5. Legacy validation (for backward compatibility)
-            legacy_issues = []
-
-            # Check expected fields for object results
-            expected_fields = test_case.get("expected_fields", [])
-            if expected_fields and isinstance(result, dict):
-                missing_fields = [
-                    field for field in expected_fields if field not in result
-                ]
-                if missing_fields:
-                    legacy_issues.append(f"Missing expected fields: {missing_fields}")
-
-            # Check expected type for array results
-            expected_type = test_case.get("expected_type")
-            if expected_type == "array" and not isinstance(result, list):
-                legacy_issues.append(f"Expected array, got {type(result).__name__}")
-
-            validation_results["legacy_validation"] = {
-                "valid": len(legacy_issues) == 0,
-                "issues": legacy_issues,
-            }
-
-            if legacy_issues:
-                return (
-                    False,
-                    f"Legacy validation failed: {'; '.join(legacy_issues)}",
                     duration,
                     validation_results,
                 )
